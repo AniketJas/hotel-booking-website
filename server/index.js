@@ -3,14 +3,21 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const UserModel = require("./models/USER");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
+const port = 4000;
 const bcryptSalt = bcrypt.genSaltSync(8);
+const jwtSecret = "abcxyz";
+
 require("dotenv").config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -35,6 +42,43 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.listen(4000, () => {
-  console.log("server running on port 4000");
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const userDoc = await UserModel.findOne({ email });
+
+  if (userDoc) {
+    const passOK = bcrypt.compareSync(password, userDoc.password);
+
+    if (passOK) {
+      jwt.sign(
+        { email: userDoc.email, id: userDoc._id },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(userDoc);
+        }
+      );
+    } else {
+      res.status(422).json("pass not OK");
+    }
+  } else {
+    res.json("User not found");
+  }
+});
+
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, (err, user) => {
+      if (err) throw err;
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
+});
+
+app.listen(port, () => {
+  console.log("server running on port " + port);
 });
