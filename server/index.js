@@ -45,7 +45,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const userDoc = await UserModel.findOne({ email });
-
+  // console.log(userDoc);
   if (userDoc) {
     const passOK = bcrypt.compareSync(password, userDoc.password);
 
@@ -63,7 +63,8 @@ app.post("/login", async (req, res) => {
       res.status(422).json("pass not OK");
     }
   } else {
-    res.json("User not found");
+    // res.json("User not found");
+    res.status(422).json("user not found");
   }
 });
 
