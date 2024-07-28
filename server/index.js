@@ -5,6 +5,9 @@ const UserModel = require("./models/USER");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const imageDownloader = require("image-downloader");
+const multer = require("multer");
+const fs = require("fs");
 
 const port = 4000;
 const bcryptSalt = bcrypt.genSaltSync(8);
@@ -15,6 +18,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads/"));
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -83,6 +87,33 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
+});
+
+app.post("/upload-by-link", async (req, res) => {
+  //upload photo by link
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.json(newName);
+});
+
+const photosMiddleware = multer({ dest: "uploads" });
+app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
+  //upload photo from local device
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads\\", ""));
+  }
+  res.json(uploadedFiles);
 });
 
 app.listen(port, () => {
