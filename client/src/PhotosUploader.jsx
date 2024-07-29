@@ -13,7 +13,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
     onChange((prev) => {
       return [...prev, filename];
     });
-    console.log(addedPhotos);
+    // console.log(addedPhotos);
     setPhotoLink("");
   }
 
@@ -40,7 +40,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
           return [...prev, ...filenames];
         });
       });
-    console.log(addedPhotos);
+    // console.log(addedPhotos);
   }
 
   return (

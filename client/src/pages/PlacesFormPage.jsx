@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Perks from "../PerksLabel";
 import PhotosUploader from "../PhotosUploader";
 import AccountNav from "../AccountNav";
+import { Navigate, useParams } from "react-router-dom";
 
 export default function PlacesFormPage() {
+  const { id } = useParams();
+
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -14,6 +17,27 @@ export default function PlacesFormPage() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState("");
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    //for editing values
+    if (!id) {
+      return;
+    } else {
+      axios.get("/places/" + id).then((response) => {
+        const { data } = response;
+        setTitle(data.title);
+        setAddress(data.address);
+        setAddedPhotos(data.photos);
+        setDescription(data.description);
+        setPerks(data.perks);
+        setExtraInfo(data.extraInfo);
+        setCheckIn(data.checkIn);
+        setCheckOut(data.checkOut);
+        setMaxGuests(data.maxGuests);
+      });
+    }
+  }, [id]);
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
@@ -32,7 +56,7 @@ export default function PlacesFormPage() {
     );
   }
 
-  async function addNewPlace(e) {
+  async function savePlace(e) {
     e.preventDefault();
 
     const placeData = {
@@ -46,16 +70,24 @@ export default function PlacesFormPage() {
       checkOut,
       maxGuests,
     };
+    if (id) {
+      //update
+      await axios.put("/places", { id, ...placeData });
+    } else {
+      //new
+      await axios.post("/places", placeData);
+    }
+    setRedirect(true);
+  }
 
-    await axios.post("/places", placeData);
-    // setRedirectToPlacesList("/account/places");
-    // setRedirectToPlacesList(true);
+  if (redirect) {
+    return <Navigate to={"/account/places"} />;
   }
 
   return (
     <div>
       <AccountNav />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {preInput(
           "Title",
           "title for your place. should be short and catchy as in advertisement."
@@ -83,7 +115,7 @@ export default function PlacesFormPage() {
 
         {preInput("Description", "description of the place")}
         <textarea
-          className=""
+          className="h-32"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -95,6 +127,7 @@ export default function PlacesFormPage() {
 
         {preInput("Extra Info", "house rules, etc..")}
         <textarea
+          className="h-32"
           value={extraInfo}
           onChange={(e) => setExtraInfo(e.target.value)}
         />
