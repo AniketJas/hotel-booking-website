@@ -1,13 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const UserModel = require("./models/USER");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
+
+const UserModel = require("./models/USER");
+const PlaceModel = require("./models/Place");
 
 const port = 4000;
 const bcryptSalt = bcrypt.genSaltSync(8);
@@ -114,6 +116,41 @@ app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
     uploadedFiles.push(newPath.replace("uploads\\", ""));
   }
   res.json(uploadedFiles);
+});
+
+app.post("/places", (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  console.log(addedPhotos);
+  console.log(perks);
+
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+    const placeDoc = await PlaceModel.create({
+      owner: userData.id,
+      title: title,
+      address: address,
+      photos: addedPhotos,
+      description: description,
+      perks: perks,
+      extraInfo: extraInfo,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      maxGuests: maxGuests,
+    });
+    res.json(placeDoc);
+  });
 });
 
 app.listen(port, () => {
