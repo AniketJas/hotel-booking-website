@@ -130,6 +130,7 @@ app.post("/places", (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   // console.log(addedPhotos);
@@ -148,12 +149,13 @@ app.post("/places", (req, res) => {
       checkIn: checkIn,
       checkOut: checkOut,
       maxGuests: maxGuests,
+      price: price,
     });
     res.json(placeDoc);
   });
 });
 
-app.get("/places", (req, res) => {
+app.get("/user-places", (req, res) => {
   const { token } = req.cookies;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -167,7 +169,7 @@ app.get("/places/:id", async (req, res) => {
   res.json(await PlaceModel.findById(id));
 });
 
-app.put("/places/", async (req, res) => {
+app.put("/places", async (req, res) => {
   const { token } = req.cookies;
   const {
     id,
@@ -180,6 +182,7 @@ app.put("/places/", async (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -201,11 +204,16 @@ app.put("/places/", async (req, res) => {
         checkIn: checkIn,
         checkOut: checkOut,
         maxGuests: maxGuests,
+        price: price,
       });
       placeDoc.save();
       res.json("ok");
     }
   });
+});
+
+app.get("/places", async (req, res) => {
+  res.json(await PlaceModel.find());
 });
 
 app.listen(port, () => {
