@@ -13,7 +13,7 @@ export default function Perks({ selected, onChange }) {
       onChange([...selected].filter((selectedName) => selectedName !== name));
     }
 
-    console.log(selected);
+    // console.log(selected);
   }
 
   return (

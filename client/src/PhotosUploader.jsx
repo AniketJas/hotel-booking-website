@@ -10,11 +10,11 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
     const { data: filename } = await axios.post("/upload-by-link", {
       link: photoLink,
     });
+    setPhotoLink("");
     onChange((prev) => {
       return [...prev, filename];
     });
     // console.log(addedPhotos);
-    setPhotoLink("");
   }
 
   function uploadPhoto(e) {
@@ -64,6 +64,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
         <input
           type="text"
           placeholder="Add using link .......jpg"
+          value={photoLink}
           onChange={(e) => setPhotoLink(e.target.value)}
         />
         <button
