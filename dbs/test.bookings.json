@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "66ab835fc9fd1ab05d7b9871"
+  },
+  "place": {
+    "$oid": "66a7c573f1344e56390bad8c"
+  },
+  "user": {
+    "$oid": "669fc0c4d71eb533f8b405da"
+  },
+  "checkIn": {
+    "$date": "2024-08-02T00:00:00.000Z"
+  },
+  "checkOut": {
+    "$date": "2024-08-06T00:00:00.000Z"
+  },
+  "noOfGuests": 2,
+  "name": "AJ",
+  "phno": "1234",
+  "price": 14080,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ab85a4c9fd1ab05d7b9887"
+  },
+  "place": {
+    "$oid": "66a7c759f1344e56390bad9a"
+  },
+  "user": {
+    "$oid": "669fc0c4d71eb533f8b405da"
+  },
+  "checkIn": {
+    "$date": "2024-08-02T00:00:00.000Z"
+  },
+  "checkOut": {
+    "$date": "2024-08-05T00:00:00.000Z"
+  },
+  "noOfGuests": 2,
+  "name": "Aniket Jass",
+  "phno": "123",
+  "price": 15060,
+  "__v": 0
+}]

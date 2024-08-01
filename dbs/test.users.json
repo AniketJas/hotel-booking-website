@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "668fd9e459a11f01ab01007d"
+  },
+  "name": "Tanvi Raj",
+  "email": "tanviraj@gmail.com",
+  "password": "$2b$08$vI/xcFgto3nXlz7eL/Ktf.RWvYD1tIqbrgn7IDB2Fy8YX/cu73ohu",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669fc0c4d71eb533f8b405da"
+  },
+  "name": "Aniket Jas",
+  "email": "aniketjas@gmail.com",
+  "password": "$2b$08$qem1LV7pCByFOis4Acc0XuZHVle3rM29whIffoFBrRGwDX0q.nUIW",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66a7cdaaf1344e56390badd3"
+  },
+  "name": "Kiran Devi",
+  "email": "kirandevi@gmail.com",
+  "password": "$2b$08$q88GTsS6Sb408qsyZXe7YuG2q778HawzxPwipkQC/2cdSxbExadUK",
+  "__v": 0
+}]
