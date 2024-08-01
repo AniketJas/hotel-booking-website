@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import axios from "axios";
+
+import { UserContextProvider } from "./UserContext.jsx";
 import IndexPage from "./pages/IndexPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import Layout from "./Layout.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
-import axios from "axios";
-import { UserContextProvider } from "./UserContext.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import PlacesPage from "./pages/PlacesPage.jsx";
 import PlacesFormPage from "./pages/PlacesFormPage.jsx";
@@ -30,7 +31,7 @@ function App() {
             <Route path="/account/places/:id" element={<PlacesFormPage />} />
             <Route path="/place/:id" element={<PlacePage />} />
             <Route path="/account/bookings" element={<BookingsPage />} />
-            <Route path="/account/booking/:id" element={<BookingPage />} />
+            <Route path="/account/bookings/:id" element={<BookingPage />} />
           </Route>
         </Routes>
       </UserContextProvider>
