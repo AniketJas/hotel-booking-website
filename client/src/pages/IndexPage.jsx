@@ -20,7 +20,7 @@ export default function IndexPage() {
               {place.photos?.[0] && (
                 <img
                   src={"http://localhost:4000/uploads/" + place.photos?.[0]}
-                  alt=""
+                  alt={place.photos?.[0]}
                   className="rounded-2xl object-cover aspect-square"
                 />
               )}
