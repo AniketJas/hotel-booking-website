@@ -51,7 +51,7 @@ export default function BookingWidget({ place }) {
   }
 
   if (redirect) {
-    return <Navigate to={"/account/booking/" + bookingId} />;
+    return <Navigate to={"/account/bookings/" + bookingId} />;
   }
 
   return (
